@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77daeb49a5b4de4b15774ec089a1ff8, type: 3}
+  m_Name: SwingingHook
+  m_EditorClassIdentifier: Assembly-CSharp::Project.Scripts.GamePlay.Player.Abilities.Configs.MovingAbilityConfig
+  <MovementMoveStateConfig>k__BackingField: {fileID: 11400000, guid: 2a4e410546d84bf41ad62d155bf37fd5, type: 2}

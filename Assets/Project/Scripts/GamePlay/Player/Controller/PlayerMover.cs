@@ -57,6 +57,7 @@ namespace Project.Scripts.GamePlay.Player.Controller
         private float _baseColliderHeight;
 
         private bool _isGrounded;
+        private MovingObject _currentMovingObject;
         private float _additionalRaycastLength;
         private float _baseSensorRange;
 
@@ -91,6 +92,7 @@ namespace Project.Scripts.GamePlay.Player.Controller
         public bool IsFlying => false;
 
         public Vector3 GetVelocity() => _savedVelocity;
+        public MovingObject  MovingObject => _currentMovingObject;
 
         public Vector3 GetMomentum() => _useLocalMomentum ? _tr.localToWorldMatrix * _momentum : _momentum;
 
@@ -237,6 +239,11 @@ namespace Project.Scripts.GamePlay.Player.Controller
             _footRoot.up = _sensor.GetNormal();
         }
 
+        public void SetParent(Transform parent)
+        {
+            Tr.SetParent(parent);
+        }
+
         public void CheckForGround(float fixedDeltaTime)
         {
             if (_currentLayer != gameObject.layer)
@@ -252,6 +259,11 @@ namespace Project.Scripts.GamePlay.Player.Controller
 
             bool wasGrounded = _isGrounded;
             _isGrounded = _sensor.HasDetectedHit();
+
+            if (_isGrounded)
+            {
+                _currentMovingObject = _sensor.GetCollider().GetComponentInParent<MovingObject>();
+            }
             if (wasGrounded != _isGrounded&&!IsRising())
             {
                 _coyoteTimer.Start();

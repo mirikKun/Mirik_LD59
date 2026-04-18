@@ -17,5 +17,9 @@ MonoBehaviour:
   - <SlotKey>k__BackingField: 8
     <SlotType>k__BackingField: 2
     <EquippedAbilityConfig>k__BackingField:
-      AbilityItem: {fileID: 0}
+      AbilityItem: {fileID: 11400000, guid: d9eb9181d0fafe14eb7634fc13cb9ffe, type: 2}
+  - <SlotKey>k__BackingField: 1
+    <SlotType>k__BackingField: 1
+    <EquippedAbilityConfig>k__BackingField:
+      AbilityItem: {fileID: 11400000, guid: 2241d56c2e4def7438e794cb15cac36d, type: 2}
   <InactiveAbilities>k__BackingField: []

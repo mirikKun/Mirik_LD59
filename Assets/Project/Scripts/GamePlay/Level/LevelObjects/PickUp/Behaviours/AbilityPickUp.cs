@@ -16,12 +16,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.PickUp.Behaviours
         private void Construct()
         {
         }
-
-        protected override void Awake()
-        {
-            base.Awake();
-        }
-
+        
         private void Start()
         {
             if (_abilityItem)

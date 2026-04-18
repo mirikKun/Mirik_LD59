@@ -19,6 +19,7 @@ namespace Project.Scripts.GamePlay.Player.Controller
         private Collider _lastDetectedCollider;
         private IInputReader _inputReader;
         private bool _isInteractPressed;
+        private bool _holdInteractActive;
 
         [Inject]
         private void Construct(IInputReader inputReader)
@@ -72,12 +73,26 @@ namespace Project.Scripts.GamePlay.Player.Controller
                         _lastInteractable = null;
                     }
                 }
+                else if (_lastInteractable == null &&
+                         currentCollider.TryGetComponent<IInteractable>(out var regainInteractable) &&
+                         regainInteractable.NeeedToPress)
+                {
+                    _lastInteractable = regainInteractable;
+                    regainInteractable.HighLight();
+                }
 
                 // Обробка взаємодії, якщо є активний interactable
                 if (_lastInteractable != null && _isInteractPressed)
                 {
                     _lastInteractable.Interact(Entity);
                     Entity.Get<PlayerController>().SetRespawnPosition(transform.position);
+                    if (_lastInteractable.NeeedToPress)
+                        _holdInteractActive = true;
+                    else
+                        UnHighlightLast();
+                }
+                else if (_holdInteractActive && !_isInteractPressed)
+                {
                     UnHighlightLast();
                 }
             }
@@ -95,6 +110,7 @@ namespace Project.Scripts.GamePlay.Player.Controller
         {
             _lastInteractable?.UnHighLight();
             _lastInteractable = null;
+            _holdInteractActive = false;
         }
     }
 }

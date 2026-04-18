@@ -77,7 +77,7 @@ namespace Project.Scripts.GamePlay.Core.GameplayStateMachine
             var previousState = _currentNode.State;
             var nextState = state;
 
-            Debug.Log($"Prev {previousState.GetType().Name} Next{nextState.GetType().Name}");
+           // Debug.Log($"Prev {previousState.GetType().Name} Next{nextState.GetType().Name}");
             previousState?.OnExit();
             AddStateToHistory(state);
             nextState.OnEnter();

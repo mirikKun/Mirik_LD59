@@ -29,6 +29,7 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
         public void OnExit()
         {
             Effects.CameraMovingEffects.SetGrounded(false);
+            Mover.SetParent(null);
         }
 
         public void FixedUpdate(float fixedDeltaTime)
@@ -53,6 +54,10 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
             momentum = horizontalMomentum + verticalMomentum;
 
             Mover.SetMomentum(momentum);
+
+
+            Mover.SetParent(Mover.MovingObject?.Root);
+
         }
 
         public void Update(float deltaTime)

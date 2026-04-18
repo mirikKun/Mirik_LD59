@@ -14,12 +14,15 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects
         [SerializeField] private SoundData _interactSound;
 
         [SerializeField] private bool _oneTimeUse;
+        [SerializeField] private bool _needToPress;
 
         private readonly List<int> _previousViewLayers = new();
         private ISoundsSystem _soundsSystem;
         protected bool _isActive=true;
+        public bool NeeedToPress=>_needToPress;
 
-        
+
+
         [Inject]
         private void Construct(ISoundsSystem soundsSystem) =>
             _soundsSystem = soundsSystem;
@@ -39,6 +42,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects
         }
 
         protected virtual bool CanInteractHighlight() => _isActive;
+
 
         public virtual void Interact(BaseEntity entity)
         {

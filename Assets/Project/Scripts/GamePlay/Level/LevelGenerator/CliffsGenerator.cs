@@ -47,6 +47,7 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
                 instance.gameObject.SetActive(true);
                 var scaleMul = RandomVectorPerAxis(_scaleFrom, _scaleTo);
                 instance.transform.localScale = Vector3.Scale(prefab.transform.localScale, scaleMul);
+                instance.Initialize(spawnBounds, exclusionBounds);
             }
         }
 

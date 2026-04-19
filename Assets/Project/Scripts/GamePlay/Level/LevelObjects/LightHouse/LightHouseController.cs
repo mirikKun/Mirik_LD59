@@ -30,8 +30,8 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.LightHouse
             _verticalAngle = Mathf.Clamp(_startVerticalRotation, minV, maxV);
 
             _leftWheel.WheelRotated += RotateMirrorHorizontally;
-            _downWheel.WheelRotated += RotateMirrorVertically;
             _rigtWheel.WheelRotated += RotateMirrorHorizontally;
+            _downWheel.WheelRotated += RotateMirrorVertically;
             _upWheel.WheelRotated += RotateMirrorVertically;
 
             ApplyRotations();

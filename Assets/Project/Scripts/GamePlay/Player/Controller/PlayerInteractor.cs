@@ -85,7 +85,7 @@ namespace Project.Scripts.GamePlay.Player.Controller
                 }
 
                 // Обробка взаємодії, якщо є активний interactable
-                if (_lastInteractable != null && _isInteractPressed&&!_isInteractableHolded)
+                if (_lastInteractable != null && ((_isInteractPressed && !_isInteractableHolded)||(_lastInteractable.NeeedToPress&&_isInteractPressed)))
                 {
                     _lastInteractable.Interact(Entity);
                     Entity.Get<PlayerController>().SetRespawnPosition(transform.position);

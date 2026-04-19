@@ -70,7 +70,8 @@ namespace Project.Scripts.GamePlay.Player.Controller
         {
             _startPosition = position;
         }
-        private void RespawnPlayer(BaseEntity baseEntity)
+
+        public void RespawnPlayer(BaseEntity baseEntity)
         {
             ResetPlayerPosition();
             Entity.Get<PlayerHealth>().Reset();

@@ -31,7 +31,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects
         protected virtual void Awake()
         {
             CacheViewLayer();
-            _tutorialToAppear.gameObject.SetActive(false);
+            _tutorialToAppear?.gameObject.SetActive(false);
         }
 
         protected void CacheViewLayer()

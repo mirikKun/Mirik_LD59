@@ -15,6 +15,7 @@ namespace Project.Scripts.GamePlay.Player.PlayerResources
         public event Action<int, int> RopeChargesChanged;
 
         public event Action<float> SwingProgressChanged;
+        public event Action<bool> CanGrapple;
 
         public int MaxRopes => _maxRopes;
         public int AirHookChargesRemaining => _airHookCharges;
@@ -36,7 +37,6 @@ namespace Project.Scripts.GamePlay.Player.PlayerResources
             _wasGrounded = grounded;
         }
 
-        /// <summary>Increases max rope count by one. If the player is grounded, refills air-hook charges to the new max.</summary>
         public void AddOneRopeTowardMax()
         {
             _maxRopes++;
@@ -59,6 +59,11 @@ namespace Project.Scripts.GamePlay.Player.PlayerResources
         public void SetRopeProgress(float progress)
         {
             SwingProgressChanged?.Invoke(Mathf.Clamp01(progress));
+        }
+
+        public void SetCanGrapple(bool canGrapple)
+        {
+            CanGrapple?.Invoke(canGrapple);
         }
 
         public void RestoreAllSpent()

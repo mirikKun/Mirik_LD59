@@ -82,7 +82,7 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
                 return;
             }
 
-            _idleNoContactAccumulated += Time.deltaTime;
+           // _idleNoContactAccumulated += Time.deltaTime;
             if (_idleNoContactAccumulated < _idleRelocateThresholdSeconds)
                 return;
 

@@ -54,6 +54,7 @@ namespace Project.Scripts.Infrastructure.Installers
             Container.BindInterfacesAndSelfTo<LoadingGameplayState>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameplayEnterState>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameLoopState>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameWonState>().AsSingle();
             
 
 

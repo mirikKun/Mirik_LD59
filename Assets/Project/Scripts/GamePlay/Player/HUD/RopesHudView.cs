@@ -9,6 +9,7 @@ namespace Project.Scripts.GamePlay.Player.HUD
     public class RopesHudView : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _ropesCanvasGroup;
+        [SerializeField] private CanvasGroup _aimCanvasGroup;
         [SerializeField] private PlayerEntity _playerEntity;
         [SerializeField] private Image _ropeChargePrefab;
         [SerializeField] private Image _ropeProgress;
@@ -16,6 +17,8 @@ namespace Project.Scripts.GamePlay.Player.HUD
 
         [SerializeField] private Color _activeColor;
         [SerializeField] private Color _inactiveColor;
+
+        [SerializeField] private float _cantGrappleAlpha = 0.01f;
 
         private readonly List<Image> _spawnedChargeImages = new();
         private RopeResourceController _ropes;
@@ -34,6 +37,7 @@ namespace Project.Scripts.GamePlay.Player.HUD
             _ropes = ropes;
             _ropes.RopeChargesChanged += OnRopeChargesChanged;
             _ropes.SwingProgressChanged += OnSwingProgressChanged;
+            _ropes.CanGrapple += SetCanGrapple;
         }
 
         private void OnDisable()
@@ -42,6 +46,8 @@ namespace Project.Scripts.GamePlay.Player.HUD
             {
                 _ropes.RopeChargesChanged -= OnRopeChargesChanged;
                 _ropes.SwingProgressChanged -= OnSwingProgressChanged;
+                _ropes.CanGrapple -= SetCanGrapple;
+
                 _ropes = null;
             }
         }
@@ -66,6 +72,11 @@ namespace Project.Scripts.GamePlay.Player.HUD
         {
             if (_ropeProgress != null)
                 _ropeProgress.fillAmount = progress01;
+        }
+
+        private void SetCanGrapple(bool canGrapple)
+        {
+            _aimCanvasGroup.alpha = canGrapple ? 1f : _cantGrappleAlpha;
         }
 
         private void RebuildChargeIcons(int maxRopes)

@@ -65,7 +65,8 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
         private void HandleActionInput(bool isButtonPressed)
         {
             _actionKeyIsPressed = isButtonPressed;
-            if(!_preparingStarted&&_actionKeyIsPressed&& (CanGrapple))
+            bool canGrapple = CanGrapple;
+            if(!_preparingStarted&&_actionKeyIsPressed&& (canGrapple))
             {
                 _swingingPoint = _raycastSensor.GetPosition();
                 _distance = (_swingingPoint - Mover.Tr.position).magnitude;
@@ -81,6 +82,7 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
                 Effects.HookEffects.ClearGrappleLine();
                 _preparingStarted = false;
             }
+            
         }
 
         public void OnEnter()
@@ -194,10 +196,18 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
             return ropes.HasAirHookCharge();
         }
 
+        private bool CheckGrapple()
+        {
+            bool canGrapple = CanGrapple;
+            if (_player.TryGet(out RopeResourceController ropes))
+                ropes.SetCanGrapple(canGrapple);
+            return true;
+        }
 
-        public bool GroundedToSwingingHook() => _preparingTimer.IsFinished&&_preparingStarted&&_actionKeyIsPressed;
 
-        public bool AirToSwingingHook() => _preparingTimer.IsFinished&&_preparingStarted&&_actionKeyIsPressed;
+        public bool GroundedToSwingingHook() => (_preparingTimer.IsFinished && _preparingStarted && _actionKeyIsPressed)&CheckGrapple();
+
+        public bool AirToSwingingHook() => (_preparingTimer.IsFinished && _preparingStarted && _actionKeyIsPressed)&CheckGrapple();
 
         public bool SwingingHookToRising()
         {

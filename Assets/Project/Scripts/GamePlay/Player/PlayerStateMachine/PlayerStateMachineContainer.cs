@@ -85,6 +85,31 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine
             return false;
         }
 
+        /// <summary>
+        /// Same as <see cref="HaveStateBeforeStateInHistory{T,TBefore}"/>, but skips the most recent history entry
+        /// (the state that was just entered). Use when the current state is already appended to history.
+        /// </summary>
+        public bool HaveStateBeforeStateInHistoryExcludingMostRecent<T, TBefore>(int statesBack = 10)
+        {
+            int statesCount = _stateMachine.PreviousStates.Count;
+            if (statesCount < 2)
+                return false;
+
+            for (int i = 1; i < statesBack; i++)
+            {
+                int idx = statesCount - 1 - i;
+                if (idx < 0)
+                    return false;
+
+                if (_stateMachine.PreviousStates[idx] is T)
+                    return true;
+                if (_stateMachine.PreviousStates[idx] is TBefore)
+                    return false;
+            }
+
+            return false;
+        }
+
         public bool IsGroundedState() => _stateMachine.CurrentState is GroundedState or SlopeSlidingState;
         public T GetState<T>() where T : IState => _stateMachine.GetState<T>();
 

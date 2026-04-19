@@ -96,6 +96,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects
             if (_oneTimeUse)
             {
                 _isActive = false;
+                Destroy(gameObject);
             }
         }
     }

@@ -33,7 +33,7 @@ namespace Project.Scripts.GamePlay.Player.Controller
             _raycastSensor.Layermask= _pickableLayer;
             _raycastSensor.CastLength = (_checkDistance);
             _raycastSensor.SetCastDirection(CastDirection.Forward);
-            _inputReader.Interact += OnInteractInput;
+            _inputReader.Attack += OnInteractInput;
         }
 
         private void OnInteractInput(bool pressed)
@@ -43,7 +43,7 @@ namespace Project.Scripts.GamePlay.Player.Controller
 
         private void OnDestroy()
         {
-            _inputReader.Interact -= OnInteractInput;
+            _inputReader.Attack -= OnInteractInput;
         }
 
         public void Tick()

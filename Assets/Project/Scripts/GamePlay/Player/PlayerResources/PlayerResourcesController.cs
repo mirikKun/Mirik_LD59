@@ -4,15 +4,16 @@ using UnityEngine;
 
 namespace Project.Scripts.GamePlay.Player.PlayerResources
 {
-    public class PlayerResourcesController:EntityComponent
+    public class PlayerResourcesController : EntityComponent
     {
-        [SerializeField] private List<EntityResourceController> _resources = new List<EntityResourceController>();
+        [SerializeField] private List<EntityResourceController> _resources = new();
 
         public void Tick(float deltaTime)
         {
             foreach (var resourceController in _resources)
             {
-                resourceController.Tick(deltaTime);
+                if (resourceController != null)
+                    resourceController.Tick(deltaTime);
             }
         }
     }

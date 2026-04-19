@@ -15,7 +15,7 @@ MonoBehaviour:
   <SwingingSpeed>k__BackingField: 120
   <GrapplingSpeed>k__BackingField: 45
   <PreparingDuration>k__BackingField: 0.33
-  <SwingingDuration>k__BackingField: 5
+  <SwingingDuration>k__BackingField: 3
   <SwingingMaxDistance>k__BackingField: 50
   <SwingingMinDistance>k__BackingField: 3
   <MaxSwingingSpeed>k__BackingField: 25

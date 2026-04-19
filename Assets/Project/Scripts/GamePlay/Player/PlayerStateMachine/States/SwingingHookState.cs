@@ -7,6 +7,7 @@ using Project.Scripts.GamePlay.Player.Abilities.AbilityTypes;
 using Project.Scripts.GamePlay.Player.Abilities.General;
 using Project.Scripts.GamePlay.Player.Controller;
 using Project.Scripts.GamePlay.Player.Indication;
+using Project.Scripts.GamePlay.Player.PlayerResources;
 using Project.Scripts.GamePlay.Player.PlayerStateMachine.StateConfigs;
 using Project.Scripts.GamePlay.Player.PlayerStateMachine.States.AbstractStates;
 using Project.Scripts.Utils;
@@ -97,10 +98,19 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
             _preparingTimer.Stop();
             Effects.HookEffects.ClearGrappleLine();
 
+            if (_player.TryGet(out RopeResourceController ropes))
+                ropes.SetRopeProgress(0f);
         }
 
         private void OnSwingingHookStart()
         {
+            if (_player.TryGet(out RopeResourceController ropes))
+            {
+                ropes.TrySpendAirHookCharge();
+                ropes.SetRopeProgress(1f);
+
+            }
+
             _hookTimer.Start();
 
 
@@ -135,6 +145,9 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
             momentum = AdjustMaxMomentum(momentum, swingingDirection.normalized, additionalSpeed,fixedDeltaTime);
             momentum= VectorMath.RemoveDotVector(momentum, -hookDirection.normalized);
             Mover.SetMomentum(momentum);
+
+            if (_player.TryGet(out RopeResourceController ropes))
+                ropes.SetRopeProgress( _hookTimer.Progress);
         }
         
         Vector3 GetPerpendicularInPlane(Vector3 a, Vector3 b)
@@ -171,8 +184,15 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
 
         private bool CanGrapple =>
             _raycastSensor.SeOriginCastAndCheck(PlayerController.CameraTrY.position) &&
-            _raycastSensor.GetDistance() > _config.SwingingMinDistance  &&
-            !_player.Get<PlayerStateMachineContainer>().HaveStateBeforeStateInHistory<SwingingHookState, IGroundState>();
+            _raycastSensor.GetDistance() > _config.SwingingMinDistance &&
+            AirSwingingHookAllowedByRopes();
+
+        private bool AirSwingingHookAllowedByRopes()
+        {
+            if (!_player.TryGet(out RopeResourceController ropes))
+                return false;
+            return ropes.HasAirHookCharge();
+        }
 
 
         public bool GroundedToSwingingHook() => _preparingTimer.IsFinished&&_preparingStarted&&_actionKeyIsPressed;

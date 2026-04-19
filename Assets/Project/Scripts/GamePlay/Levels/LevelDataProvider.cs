@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Project.Scripts.GamePlay.Level.Systems;
 using Project.Scripts.GamePlay.Player.Controller;
 using Unity.Cinemachine;
@@ -11,6 +11,8 @@ namespace Project.Scripts.GamePlay.Levels
         public Transform PlayerSpawnTransform { get; private set; }
 
         public Transform LevelGeneratorTransform { get; private set; }
+
+        public Transform LighthouseTarget { get; private set; }
 
         public PlayerSpawnPointsInfo CurrentLevelSpawnsInfo { get; private set; }
 
@@ -40,6 +42,11 @@ namespace Project.Scripts.GamePlay.Levels
         public void SetLevelGeneratorTransform(Transform levelGeneratorTransform)
         {
             LevelGeneratorTransform = levelGeneratorTransform;
+        }
+
+        public void SetLighthouseTarget(Transform lighthouseTarget)
+        {
+            LighthouseTarget = lighthouseTarget;
         }
 
         public void SetCamera(CinemachineCamera mainCamera)

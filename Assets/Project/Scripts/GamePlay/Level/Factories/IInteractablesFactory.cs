@@ -13,5 +13,9 @@ namespace Project.Scripts.GamePlay.Level.Factories
         void SetupInteractablesParent(Transform parent);
         AbilityPickUp CreateAbilityPickUp(BaseAbilityItem abilityItem, Vector3 position = default,
             Quaternion rotation = default, Transform parent = null);
+
+        IInteractable CreateShipRopeLoot(Vector3 worldPosition, Transform parent = null);
+
+        IInteractable CreateShipPlankLoot(Vector3 worldPosition, Transform parent = null);
     }
 }

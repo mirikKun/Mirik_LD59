@@ -15,10 +15,12 @@ namespace Project.Scripts.GamePlay.Levels
 
         Transform PlayerSpawnTransform { get; }
         Transform LevelGeneratorTransform { get; }
+        Transform LighthouseTarget { get; }
         CinemachineCamera MainCamera { get; }
         PlayerEntity Player { get; }
         void SetStartPoint(Transform spawnTransform);
         void SetLevelGeneratorTransform(Transform levelGeneratorTransform);
+        void SetLighthouseTarget(Transform lighthouseTarget);
         void SetCamera(CinemachineCamera mainCamera);
         void SetPlayer(PlayerEntity player);
 

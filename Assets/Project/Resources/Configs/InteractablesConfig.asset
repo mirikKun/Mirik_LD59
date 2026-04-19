@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e4d8c2f1a6b4e7093c5d8e1f2a4b6c8, type: 3}
+  m_Name: InteractablesConfig
+  m_EditorClassIdentifier: Assembly-CSharp::Project.Scripts.GamePlay.Level.Configs.InteractablesConfig
+  _entries:
+  - <Type>k__BackingField: 3
+    <Prefab>k__BackingField: {fileID: 2898289655529386882, guid: 13f545cd581d60249bbb88690c81f950, type: 3}
+  - <Type>k__BackingField: 4
+    <Prefab>k__BackingField: {fileID: 5452655383945538578, guid: 5e67208c5040c8e4e831151165942798, type: 3}

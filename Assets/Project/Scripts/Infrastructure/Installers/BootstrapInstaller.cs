@@ -4,6 +4,7 @@ using Project.Scripts.GamePlay.Common.Time;
 using Project.Scripts.GamePlay.Core.GameBehaviour.Services;
 using Project.Scripts.GamePlay.Core.Input;
 using Project.Scripts.GamePlay.Input.Service;
+using Project.Scripts.GamePlay.Level.Factories;
 using Project.Scripts.GamePlay.Levels;
 using Project.Scripts.GamePlay.Player.Abilities.Factory;
 using Project.Scripts.GamePlay.Player.Abilities.Systems;
@@ -70,6 +71,7 @@ namespace Project.Scripts.Infrastructure.Installers
             Container.Bind<ISoundsSystem>().To<SoundsSystem>().AsSingle();
             Container.Bind<ILevelDataProvider>().To<LevelDataProvider>().AsSingle();
             Container.Bind<IProgressProvider>().To<ProgressProvider>().AsSingle();
+            Container.Bind<IInteractablesFactory>().To<InteractablesFactory>().AsSingle();
         }
 
 

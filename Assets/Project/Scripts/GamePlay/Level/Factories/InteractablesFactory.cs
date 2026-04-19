@@ -2,6 +2,7 @@ using Project.Scripts.GamePlay.Level.Configs;
 using Project.Scripts.GamePlay.Level.Enums;
 using Project.Scripts.GamePlay.Level.LevelObjects;
 using Project.Scripts.GamePlay.Level.LevelObjects.PickUp.Behaviours;
+using Project.Scripts.GamePlay.Level.LevelObjects.Ships;
 using Project.Scripts.GamePlay.Player.Inventory.Configs;
 using Project.Scripts.Infrastructure.StaticData;
 using UnityEngine;
@@ -51,6 +52,32 @@ namespace Project.Scripts.GamePlay.Level.Factories
             
             pickUp.SetAbilityItem(abilityItem);
             return pickUp;
+        }
+
+        public IInteractable CreateShipRopeLoot(Vector3 worldPosition, Transform parent = null)
+        {
+            GameObject prefabGo = _config.GetPrefab(InteractableType.ShipRopeLoot);
+    
+
+            var ropePrefab = prefabGo.GetComponentInChildren<ShipRopeInteractable>(true);
+     
+
+            Transform resolvedParent = parent != null ? parent : _interactablesParent;
+            ShipRopeInteractable instance = _container.InstantiatePrefabForComponent<ShipRopeInteractable>(
+                ropePrefab.gameObject, worldPosition, Quaternion.identity, resolvedParent);
+            instance.BeginDriftingAt(worldPosition);
+            return instance;
+        }
+
+        public IInteractable CreateShipPlankLoot(Vector3 worldPosition, Transform parent = null)
+        {
+            GameObject prefabGo = _config.GetPrefab(InteractableType.ShipPlankLoot);
+            var plankPrefab = prefabGo.GetComponentInChildren<ShipPlankInteractable>(true);
+            Transform resolvedParent = parent != null ? parent : _interactablesParent;
+            ShipPlankInteractable instance = _container.InstantiatePrefabForComponent<ShipPlankInteractable>(
+                plankPrefab.gameObject, worldPosition, Quaternion.identity, resolvedParent);
+            instance.BeginDriftingAt(worldPosition);
+            return instance;
         }
     }
 }

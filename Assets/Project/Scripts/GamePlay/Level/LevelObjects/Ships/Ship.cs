@@ -1,4 +1,6 @@
+using Project.Scripts.Common.Extensions;
 using Project.Scripts.GamePlay.Core.GameBehaviour.Services;
+using Project.Scripts.GamePlay.Level.Factories;
 using Project.Scripts.GamePlay.Level.LevelGenerator;
 using UnityEngine;
 using Zenject;
@@ -27,11 +29,15 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
         [SerializeField] private AnimationCurve _sinkTiltPitch;
         [SerializeField] private AnimationCurve _sinkTiltYaw;
         [SerializeField] private AnimationCurve _sinkTiltRoll;
+        
+        
+        [SerializeField] private float _lootSpawnHeight;
 
         [Header("Model")]
         [SerializeField] private Vector3 _modelRotationOffset = new Vector3(0f, 180f, 0f);
 
         private IUpdateService _updateService;
+        private IInteractablesFactory _interactablesFactory;
         private Vector3 _basePosition;
         private Vector3 _routeEnd;
         private float _speed;
@@ -44,9 +50,10 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
         private Quaternion _sinkStartRotation;
 
         [Inject]
-        private void Construct(IUpdateService updateService)
+        private void Construct(IUpdateService updateService, IInteractablesFactory interactablesFactory)
         {
             _updateService = updateService;
+            _interactablesFactory = interactablesFactory;
         }
 
 [ContextMenu("Reset")]
@@ -131,7 +138,10 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
             ApplyPose();
 
             if (Vector3.SqrMagnitude(_basePosition - _routeEnd) <= _arrivalThreshold * _arrivalThreshold)
+            {
+                _interactablesFactory.CreateShipRopeLoot(transform.position.SetY(_lootSpawnHeight));
                 Destroy(gameObject);
+            }
         }
 
         private void ApplyPose()
@@ -182,6 +192,8 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
             _sinkStartRotation = transform.rotation;
 
             _sinkParticles.Play();
+            _interactablesFactory.CreateShipPlankLoot(transform.position.SetY(_lootSpawnHeight));
+
         }
 
         private void TickSink(float deltaTime)
@@ -198,7 +210,9 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
             transform.rotation = _sinkStartRotation * tilt;
 
             if (t >= 1f)
+            {
                 Destroy(gameObject);
+            }
         }
 
         private static float EvaluateOrOne(AnimationCurve curve, float time)

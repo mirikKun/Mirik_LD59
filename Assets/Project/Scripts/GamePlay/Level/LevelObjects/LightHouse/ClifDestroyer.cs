@@ -8,7 +8,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.LightHouse
     {
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out Clif clif))
+            if (other.TryGetComponent(out Cliff clif))
             {
                 clif.OnClifShowed();
             }

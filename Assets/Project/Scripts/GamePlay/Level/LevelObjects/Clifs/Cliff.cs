@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Project.Scripts.GamePlay.Level.LevelGenerator
 {
-    public class Clif:MonoBehaviour
+    public class Cliff:MonoBehaviour
     {
         public void OnClifShowed()
         {

@@ -95,11 +95,4 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
         public Ship ShipPrefab;
         public float Weight = 1f;
     }
-
-    [System.Serializable]
-    public class ShipRoute
-    {
-        public Transform From;
-        public Transform To;
-    }
 }

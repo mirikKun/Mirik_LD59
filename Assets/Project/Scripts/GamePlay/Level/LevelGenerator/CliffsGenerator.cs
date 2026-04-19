@@ -7,7 +7,7 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
         private const int RandomSampleTries = 8000;
         private const int GridResolution = 32;
 
-        [SerializeField] private Transform[] _cliffPrefabs;
+        [SerializeField] private Cliff[] _cliffPrefabs;
         [SerializeField] private int _numberOfCliffs = 10;
         [SerializeField] private Transform _cliffsParent;
 
@@ -33,47 +33,24 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
 
         private void GenerateCliffs()
         {
-            if (_cliffPrefabs == null || _cliffPrefabs.Length == 0)
-            {
-                Debug.LogWarning($"{nameof(CliffsGenerator)}: assign at least one cliff prefab.");
-                return;
-            }
-
-            if (!HasAnyPrefab(_cliffPrefabs))
-            {
-                Debug.LogWarning($"{nameof(CliffsGenerator)}: all prefab slots are null.");
-                return;
-            }
-
             var spawnBounds = new Bounds(_spawnAreaCenter, _spawnAreaSize);
             var exclusionBounds = new Bounds(_exclusionAreaCenter, _exclusionAreaSize);
 
             for (var i = 0; i < _numberOfCliffs; i++)
             {
                 var position = SamplePositionGuaranteed(spawnBounds, exclusionBounds);
-                var prefab = PickRandomPrefab(_cliffPrefabs);
+                Cliff prefab = PickRandomPrefab(_cliffPrefabs);
 
                 var euler = RandomVectorPerAxis(_rotationFrom, _rotationTo);
                 var instance = Instantiate(prefab, position, Quaternion.Euler(euler), _cliffsParent);
 
                 instance.gameObject.SetActive(true);
                 var scaleMul = RandomVectorPerAxis(_scaleFrom, _scaleTo);
-                instance.localScale = Vector3.Scale(prefab.localScale, scaleMul);
+                instance.transform.localScale = Vector3.Scale(prefab.transform.localScale, scaleMul);
             }
         }
 
-        private static bool HasAnyPrefab(Transform[] prefabs)
-        {
-            foreach (var p in prefabs)
-            {
-                if (p != null)
-                    return true;
-            }
-
-            return false;
-        }
-
-        private static Transform PickRandomPrefab(Transform[] prefabs)
+        private static Cliff PickRandomPrefab(Cliff[] prefabs)
         {
             var start = Random.Range(0, prefabs.Length);
             for (var i = 0; i < prefabs.Length; i++)

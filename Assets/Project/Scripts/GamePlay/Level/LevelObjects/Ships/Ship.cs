@@ -167,7 +167,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
             if (_sinking)
                 return;
 
-            if (!other.TryGetComponent(out Clif _))
+            if (!other.TryGetComponent(out Cliff _))
                 return;
 
             BeginSink();

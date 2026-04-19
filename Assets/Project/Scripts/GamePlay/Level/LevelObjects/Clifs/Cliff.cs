@@ -7,7 +7,8 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
 {
     /// <summary>
     /// Dissolve + sink when <see cref="ClifDestroyer"/> overlaps; after destroyer leaves, waits 15–25s
-    /// then reappears near the last anchor inside spawn bounds (configured by <see cref="CliffsGenerator"/>).
+    /// then reappears near the last anchor. If there is no destroyer contact for a random 60–180s while idle,
+    /// the cliff relocates with the same dissolve animation to a random point in spawn bounds (see <see cref="CliffsGenerator"/>).
     /// </summary>
     public class Cliff : MonoBehaviour
     {
@@ -27,6 +28,10 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
         [SerializeField] private float _hiddenDelayMax = 25f;
         [SerializeField] private float _respawnOffsetRadius = 4f;
 
+        [Header("Idle relocate (no ClifDestroyer contact)")]
+        [SerializeField] private float _idleRelocateMinSeconds = 60f;
+        [SerializeField] private float _idleRelocateMaxSeconds = 180f;
+
         private Bounds _spawnBounds;
         private Bounds _exclusionBounds;
         private Vector3 _anchorPosition;
@@ -36,6 +41,8 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
         private Material[] _dissolveMaterials;
         private int _destroyerOverlapCount;
         private Coroutine _routine;
+        private float _idleNoContactAccumulated;
+        private float _idleRelocateThresholdSeconds;
 
         private static bool HasDestroyer(Collider c)
         {
@@ -50,9 +57,38 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
             _anchorRotation = transform.rotation;
             _anchorScale = transform.localScale;
             _destroyerOverlapCount = 0;
+            _idleNoContactAccumulated = 0f;
+            RollIdleRelocateThreshold();
 
             CacheDissolveMaterials();
             SetDissolve(0f);
+        }
+
+        private void RollIdleRelocateThreshold()
+        {
+            var min = Mathf.Min(_idleRelocateMinSeconds, _idleRelocateMaxSeconds);
+            var max = Mathf.Max(_idleRelocateMinSeconds, _idleRelocateMaxSeconds);
+            _idleRelocateThresholdSeconds = Random.Range(min, max);
+        }
+
+        private void Update()
+        {
+            if (_routine != null)
+                return;
+
+            if (_destroyerOverlapCount > 0)
+            {
+                _idleNoContactAccumulated = 0f;
+                return;
+            }
+
+            _idleNoContactAccumulated += Time.deltaTime;
+            if (_idleNoContactAccumulated < _idleRelocateThresholdSeconds)
+                return;
+
+            _idleNoContactAccumulated = 0f;
+            RollIdleRelocateThreshold();
+            _routine = StartCoroutine(ForcedRandomRelocateRoutine());
         }
 
         private void CacheDissolveMaterials()
@@ -89,6 +125,7 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
                 return;
 
             _destroyerOverlapCount++;
+            _idleNoContactAccumulated = 0f;
 
             if (_routine != null)
                 return;
@@ -171,6 +208,88 @@ namespace Project.Scripts.GamePlay.Level.LevelGenerator
             _anchorPosition = target;
 
             _routine = null;
+        }
+
+        private IEnumerator ForcedRandomRelocateRoutine()
+        {
+            try
+            {
+                var startPos = transform.position;
+                var sunkPos = startPos + Vector3.down * _sinkDistance;
+                var elapsed = 0f;
+                var hideTotal = Mathf.Max(_dissolveDuration, _sinkDuration);
+
+                while (elapsed < hideTotal)
+                {
+                    elapsed += Time.deltaTime;
+                    var progress = Mathf.Clamp01(elapsed / hideTotal);
+                    SetDissolve(progress);
+                    transform.position = Vector3.Lerp(startPos, sunkPos, progress);
+                    yield return null;
+                }
+
+                SetDissolve(1f);
+                transform.position = sunkPos;
+
+                foreach (var c in _colliders)
+                    c.enabled = false;
+
+                var target = SampleFullyRandomInSpawn();
+                var riseFrom = target + Vector3.down * _sinkDistance;
+                transform.SetPositionAndRotation(riseFrom, _anchorRotation);
+                transform.localScale = _anchorScale;
+
+                foreach (var c in _colliders)
+                    c.enabled = true;
+
+                elapsed = 0f;
+                while (elapsed < hideTotal)
+                {
+                    elapsed += Time.deltaTime;
+                    var progress = Mathf.Clamp01(elapsed / hideTotal);
+                    SetDissolve(Mathf.SmoothStep(1f, 0f, progress));
+                    transform.position = Vector3.Lerp(riseFrom, target, progress);
+                    yield return null;
+                }
+
+                SetDissolve(0f);
+                transform.position = target;
+                _anchorPosition = target;
+            }
+            finally
+            {
+                _routine = null;
+            }
+        }
+
+        private Vector3 SampleFullyRandomInSpawn()
+        {
+            var spawn = _spawnBounds;
+            var exclusion = _exclusionBounds;
+
+            for (var a = 0; a < RandomSampleTries; a++)
+            {
+                var p = new Vector3(
+                    Random.Range(spawn.min.x, spawn.max.x),
+                    Random.Range(spawn.min.y, spawn.max.y),
+                    Random.Range(spawn.min.z, spawn.max.z));
+                if (!exclusion.Contains(p))
+                    return p;
+            }
+
+            for (var ix = 0; ix <= GridResolution; ix++)
+            for (var iy = 0; iy <= GridResolution; iy++)
+            for (var iz = 0; iz <= GridResolution; iz++)
+            {
+                var p = new Vector3(
+                    Mathf.Lerp(spawn.min.x, spawn.max.x, ix / (float)GridResolution),
+                    Mathf.Lerp(spawn.min.y, spawn.max.y, iy / (float)GridResolution),
+                    Mathf.Lerp(spawn.min.z, spawn.max.z, iz / (float)GridResolution));
+                if (!exclusion.Contains(p))
+                    return p;
+            }
+
+            return spawn.center;
         }
 
         private Vector3 SampleRespawnNear(Vector3 basePos)

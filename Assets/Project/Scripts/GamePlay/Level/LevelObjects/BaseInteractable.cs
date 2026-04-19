@@ -15,6 +15,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects
 
         [SerializeField] private bool _oneTimeUse;
         [SerializeField] private bool _needToPress;
+        [SerializeField] private InteractableTutorial _tutorialToAppear;
 
         private readonly List<int> _previousViewLayers = new();
         private ISoundsSystem _soundsSystem;
@@ -30,6 +31,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects
         protected virtual void Awake()
         {
             CacheViewLayer();
+            _tutorialToAppear.gameObject.SetActive(false);
         }
 
         protected void CacheViewLayer()
@@ -61,31 +63,34 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects
             _soundsSystem.Play(_interactSound);
         }
 
-        public virtual void HighLight()
+        public virtual void HighLight(BaseEntity entity)
         {
-            if (!CanInteractHighlight() || _views == null || _views.Count == 0)
+            if (!CanInteractHighlight())
                 return;
-            for (var i = 0; i < _views.Count; i++)
-            {
-                GameObject view = _views[i];
-                if (view == null)
-                    continue;
-                view.layer = _outlineLayer;
-            }
+            // for (var i = 0; i < _views.Count; i++)
+            // {
+            //     GameObject view = _views[i];
+            //     if (view == null)
+            //         continue;
+            //     view.layer = _outlineLayer;
+            // }
+            _tutorialToAppear?.SetupTarget(entity.transform);
+            _tutorialToAppear?.gameObject.SetActive(true);
         }
 
         public virtual void UnHighLight()
         {
-            if (!CanInteractHighlight() || _views == null || _views.Count == 0)
+            if (!CanInteractHighlight())
                 return;
-            for (var i = 0; i < _views.Count; i++)
-            {
-                GameObject view = _views[i];
-                if (view == null)
-                    continue;
-                if (i < _previousViewLayers.Count)
-                    view.layer = _previousViewLayers[i];
-            }
+            // for (var i = 0; i < _views.Count; i++)
+            // {
+            //     GameObject view = _views[i];
+            //     if (view == null)
+            //         continue;
+            //     if (i < _previousViewLayers.Count)
+            //         view.layer = _previousViewLayers[i];
+            // }
+            _tutorialToAppear?.gameObject.SetActive(false);
         }
 
         public event Action Interacted;

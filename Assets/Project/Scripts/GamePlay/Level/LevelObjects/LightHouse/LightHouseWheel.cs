@@ -31,8 +31,9 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.LightHouse
             _rotationTransform.localRotation *= Quaternion.AngleAxis(angle, _rotationAxis.normalized);
         }
 
-        public override void HighLight()
+        public override void HighLight(BaseEntity entity)
         {
+            base.HighLight(entity);
             if (_highlightFadeRoutine != null)
                 StopCoroutine(_highlightFadeRoutine);
             _highlightFadeRoutine = StartCoroutine(FadeHighlightRoutine(1f));

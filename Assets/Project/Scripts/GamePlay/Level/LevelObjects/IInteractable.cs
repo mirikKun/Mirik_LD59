@@ -7,7 +7,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects
     {
         bool NeeedToPress { get; }
         void Interact(BaseEntity entity);
-        void HighLight();
+        void HighLight(BaseEntity entity);
         void UnHighLight();
         event Action Interacted;
     }

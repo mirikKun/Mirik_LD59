@@ -19,6 +19,7 @@ namespace Project.Scripts.GamePlay.Player.Controller
         private Collider _lastDetectedCollider;
         private IInputReader _inputReader;
         private bool _isInteractPressed;
+        private bool _isInteractableHolded;
         private bool _holdInteractActive;
 
         [Inject]
@@ -39,6 +40,8 @@ namespace Project.Scripts.GamePlay.Player.Controller
         private void OnInteractInput(bool pressed)
         {
             _isInteractPressed = pressed;
+         
+                _isInteractableHolded = false;
         }
 
         private void OnDestroy()
@@ -64,7 +67,7 @@ namespace Project.Scripts.GamePlay.Player.Controller
                         {
                             UnHighlightLast();
                             _lastInteractable = interactable;
-                            interactable.HighLight();
+                            interactable.HighLight(Entity);
                         }
                     }
                     else
@@ -78,18 +81,18 @@ namespace Project.Scripts.GamePlay.Player.Controller
                          regainInteractable.NeeedToPress)
                 {
                     _lastInteractable = regainInteractable;
-                    regainInteractable.HighLight();
+                    regainInteractable.HighLight(Entity);
                 }
 
                 // Обробка взаємодії, якщо є активний interactable
-                if (_lastInteractable != null && _isInteractPressed)
+                if (_lastInteractable != null && _isInteractPressed&&!_isInteractableHolded)
                 {
                     _lastInteractable.Interact(Entity);
                     Entity.Get<PlayerController>().SetRespawnPosition(transform.position);
                     if (_lastInteractable.NeeedToPress)
                         _holdInteractActive = true;
-                    else
-                        UnHighlightLast();
+                    // else
+                    //     UnHighlightLast();
                 }
                 else if (_holdInteractActive && !_isInteractPressed)
                 {
@@ -104,6 +107,8 @@ namespace Project.Scripts.GamePlay.Player.Controller
                 }
                 _lastDetectedCollider = null;
             }
+
+            _isInteractableHolded = true;
         }
 
         private void UnHighlightLast()

@@ -1,4 +1,5 @@
-﻿using Project.Scripts.GamePlay.Windows;
+﻿using System;
+using Project.Scripts.GamePlay.Windows;
 using Project.Scripts.Infrastructure.Sounds;
 using UnityEngine;
 using Zenject;
@@ -22,6 +23,11 @@ namespace Project.Scripts.GamePlay.Levels.MainMenu
         {
             _windowService.Open(WindowId.MainMenu);
             _soundsSystem.PlayMusic(_musicSound);
+        }
+
+        private void OnDestroy()
+        {
+            _windowService.Close(WindowId.MainMenu);
         }
     }
 }

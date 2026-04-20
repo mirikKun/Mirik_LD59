@@ -59,6 +59,7 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
         public void Dispose()
         {
             //_controller.Input.Action3 -= HandleActionInput;
+            
             _player.Get<AbilitiesIndicationController>().RangeIndication.UnequipAbilityWithRange(RangeIndicationType.GrapplingHook);
         }
 
@@ -78,9 +79,12 @@ namespace Project.Scripts.GamePlay.Player.PlayerStateMachine.States
             }
             if(_preparingStarted&&!_actionKeyIsPressed)
             {
-                _preparingTimer.Stop();
                 Effects.HookEffects.ClearGrappleLine();
                 _preparingStarted = false;
+
+                _preparingTimer.Stop();
+                Debug.Log("AAAAAAAA");
+                
             }
             
         }

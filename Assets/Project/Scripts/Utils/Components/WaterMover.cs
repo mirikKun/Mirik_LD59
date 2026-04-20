@@ -9,9 +9,7 @@ namespace Project.Scripts.Utils.Components
     {
         [SerializeField] private float _radius = 0.35f;
         [SerializeField] private float _verticalAmplitude = 0.12f;
-        [Tooltip("Vertical bob angular speed in rad/s (different from horizontal => not in sync).")]
         [SerializeField] private float _verticalAngularSpeed = 1.1f;
-        [Tooltip("Horizontal circular motion angular speed in rad/s.")]
         [SerializeField] private float _horizontalAngularSpeed = 0.65f;
         [SerializeField] private float _verticalPhase;
         [SerializeField] private float _horizontalPhase;

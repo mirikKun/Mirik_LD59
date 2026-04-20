@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 722de8d46ccf4e949e66c06d680154f4, type: 3}
   m_Name: SwingingHookStateConfig
   m_EditorClassIdentifier: Assembly-CSharp::Project.Scripts.GamePlay.Player.PlayerStateMachine.StateConfigs.SwingingHookMoveStateConfig
-  <SwingingSpeed>k__BackingField: 120
+  <SwingingSpeed>k__BackingField: 111
   <GrapplingSpeed>k__BackingField: 45
   <PreparingDuration>k__BackingField: 0.33
   <SwingingDuration>k__BackingField: 3
-  <SwingingMaxDistance>k__BackingField: 40
-  <SwingingMinDistance>k__BackingField: 3
+  <SwingingMaxDistance>k__BackingField: 46
+  <SwingingMinDistance>k__BackingField: 1.8
   <MaxSwingingSpeed>k__BackingField: 25
   <SwingingExitSpeedMultiplier>k__BackingField: 1
   <StartSwingMomentum>k__BackingField: 0.1

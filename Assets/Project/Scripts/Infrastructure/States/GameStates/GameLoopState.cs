@@ -1,5 +1,7 @@
 using Project.Scripts.GamePlay.Common.Time;
 using Project.Scripts.GamePlay.Core.GameBehaviour.Services;
+using Project.Scripts.GamePlay.Core.Input;
+using Project.Scripts.GamePlay.Input.Service;
 using Project.Scripts.Infrastructure.States.StateInfrastructure;
 using UnityEngine;
 
@@ -9,9 +11,11 @@ namespace Project.Scripts.Infrastructure.States.GameStates
     {
         private readonly ITimeService _timeService;
         private readonly IUpdateService _updateService;
+        private IInputReader _inputService;
 
-        public GameLoopState(ITimeService timeService, IUpdateService updateService)
+        public GameLoopState(ITimeService timeService, IUpdateService updateService,IInputReader inputService)
         {
+            _inputService = inputService;
             _timeService = timeService;
             _updateService = updateService;
         }
@@ -39,6 +43,8 @@ namespace Project.Scripts.Infrastructure.States.GameStates
 
         public void Exit()
         {
+            _inputService.ClearPlayerActions();
+
         }
     }
 }

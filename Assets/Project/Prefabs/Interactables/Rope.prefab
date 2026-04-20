@@ -989,7 +989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e752d8d63a5cfe4a88ff986943ef788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Project.Scripts.GamePlay.Level.LevelObjects.Ships.LootPlanarObstacleMovement
-  _moveSpeed: 2.5
+  _moveSpeed: 5
   _arrivalPlanarDistance: 1.5
   _skinWidth: 0.08
   _raycastOrigin: {fileID: 737675370469617520}

@@ -8,6 +8,7 @@ namespace Project.Scripts.GamePlay.Core.Input
         Vector2 Direction { get; }
         Vector2 LookDirection { get; }
         void EnablePlayerActions();
+        void ClearPlayerActions();
         event UnityAction<bool> Jump;
         event UnityAction<bool> Dash;
         event UnityAction<bool> Crouch;

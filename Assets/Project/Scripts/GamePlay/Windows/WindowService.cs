@@ -64,6 +64,7 @@ namespace Project.Scripts.GamePlay.Windows
             _openedWindows.Remove(windowId);
 
             WindowHidden?.Invoke(window);
+            if(window)
             Object.Destroy(window.gameObject);
         }
 

@@ -39,6 +39,7 @@ namespace Project.Scripts.GamePlay.Player.PlayerEffects
                 DrawGrappleLine(end,1- preparingTimer.Progress);
                 yield return null;
             }
+            if(_grappleLineRenderer.positionCount ==2)
             DrawGrappleLine(end, 1);
         }
        

@@ -13,6 +13,26 @@ namespace Project.Scripts.GamePlay.Core.Input
         public event UnityAction DisableMouseControlCamera = delegate { };
         public event UnityAction InventoryPressed = delegate { };
         public event UnityAction Esc = delegate { };
+
+        public void ClearPlayerActions()
+        {
+            Move = delegate { };
+            Look = delegate { };
+            EnableMouseControlCamera = delegate { };
+            DisableMouseControlCamera = delegate { };
+            InventoryPressed = delegate { };
+            Esc = delegate { };
+            Jump = delegate { };
+            Dash = delegate { };
+            Crouch = delegate { };
+            Action1 = delegate { };
+            Action2 = delegate { };
+            Action3 = delegate { };
+            Attack = delegate { };
+            AttackAlt = delegate { };
+            Click = delegate { };
+        }
+
         public event UnityAction<bool> Jump = delegate { };
         public event UnityAction<bool> Dash = delegate { };
         public event UnityAction<bool> Crouch = delegate { };
@@ -232,7 +252,6 @@ namespace Project.Scripts.GamePlay.Core.Input
                 case InputActionPhase.Started:
                     Esc?.Invoke();
                     break;
-
             }
         }
 

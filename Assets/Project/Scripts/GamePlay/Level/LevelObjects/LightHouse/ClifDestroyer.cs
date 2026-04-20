@@ -7,5 +7,6 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.LightHouse
     /// </summary>
     public class ClifDestroyer : MonoBehaviour
     {
+        [SerializeField] private CapsuleCollider _player;
     }
 }

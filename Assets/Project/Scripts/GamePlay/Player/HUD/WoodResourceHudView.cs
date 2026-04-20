@@ -18,7 +18,7 @@ namespace Project.Scripts.GamePlay.Player.HUD
             _woodCanvasGroup.alpha = 0f;
         }
 
-        private void OnEnable()
+        private void Start()
         {
             if (!_playerEntity.TryGet(out WoodResourceController wood))
                 return;
@@ -28,11 +28,10 @@ namespace Project.Scripts.GamePlay.Player.HUD
             _woodCount.text = _wood.WoodAmount.ToString();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             _wood.WoodAmountChanged -= OnWoodAmountChanged;
 
-            _woodCanvasGroup.alpha = 0f;
         }
 
         private void OnWoodAmountChanged(int amount)

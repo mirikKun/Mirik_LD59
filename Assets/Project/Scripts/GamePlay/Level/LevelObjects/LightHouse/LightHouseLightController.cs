@@ -59,6 +59,11 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.LightHouse
             SetLightStrength();
         }
 
+        public float GetStrengthPercent()
+        {
+            return _strength / _maxStrength;
+        }
+
         private void CaptureFireParticleBaselines()
         {
             if (_fireParticleSystem == null)
@@ -104,7 +109,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.LightHouse
         {
             int max = 100;
             int current = (int)(_strength / _maxStrength * 100);
-            _fuelText.text = $"Fuel {current}/{max}";
+            _fuelText.text = $"Fuel {current}/{max}%";
         }
 
         private void ApplyFireParticles()

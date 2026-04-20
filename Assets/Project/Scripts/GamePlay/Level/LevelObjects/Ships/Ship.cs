@@ -1,9 +1,12 @@
+using System;
 using Project.Scripts.Common.Extensions;
 using Project.Scripts.GamePlay.Core.GameBehaviour.Services;
 using Project.Scripts.GamePlay.Level.Factories;
 using Project.Scripts.GamePlay.Level.LevelGenerator;
+using Project.Scripts.GamePlay.Player.Controller;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
 {
@@ -39,6 +42,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
         private IUpdateService _updateService;
         private IInteractablesFactory _interactablesFactory;
         private Vector3 _basePosition;
+        private Vector3 _moveDelta;
         private Vector3 _routeEnd;
         private float _speed;
         private float _wavePhase;
@@ -48,6 +52,7 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
         private Vector3 _sinkStartPosition;
         private Vector3 _sinkEndPosition;
         private Quaternion _sinkStartRotation;
+        private PlayerEntity _player;
 
         [Inject]
         private void Construct(IUpdateService updateService, IInteractablesFactory interactablesFactory)
@@ -133,7 +138,9 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
                 return;
             }
 
+            Vector3 lastPos = _basePosition;
             _basePosition = Vector3.MoveTowards(_basePosition, _routeEnd, _speed * deltaTime);
+            _moveDelta = _basePosition - lastPos;
             _wavePhase = Mathf.Repeat(_wavePhase + deltaTime * _waveCyclesPerSecond, 1f);
             ApplyPose();
 
@@ -165,6 +172,8 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
             transform.rotation = baseRot;
             var bobY = _sinking ? 0f : EvaluateOrZero(_heightWave, _wavePhase);
             transform.position = _basePosition + Vector3.up * bobY;
+            if(_player)
+            _player.transform.position += _moveDelta;
         }
 
         private static float EvaluateOrZero(AnimationCurve curve, float time)
@@ -177,15 +186,30 @@ namespace Project.Scripts.GamePlay.Level.LevelObjects.Ships
             if (_sinking)
                 return;
 
+            if (other.TryGetComponent(out PlayerEntity player))
+            {
+                _player = player;
+            }
             if (!other.TryGetComponent(out Cliff _))
                 return;
+            
 
             BeginSink();
+        }
+
+        private void OnTriggerExit(Collider other)
+        {   if (other.TryGetComponent(out PlayerEntity player))
+            {
+                _player = null;
+            }
         }
 
         private void BeginSink()
         {
             _sinking = true;
+         
+                _player = null;
+            
             _sinkElapsed = 0f;
             _sinkStartPosition = transform.position;
             _sinkEndPosition = _sinkStartPosition + Vector3.down * _sinkDepth;

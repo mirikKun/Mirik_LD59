@@ -26,10 +26,10 @@ namespace Project.Scripts.GamePlay.Player.HUD
 
         private void Awake()
         {
-            _ropesCanvasGroup.alpha = 0f;
+            _ropesCanvasGroup.alpha = 0;
         }
 
-        private void OnEnable()
+        private void Start()
         {
             if (_playerEntity == null || !_playerEntity.TryGet(out RopeResourceController ropes))
                 return;
@@ -40,7 +40,7 @@ namespace Project.Scripts.GamePlay.Player.HUD
             _ropes.CanGrapple += SetCanGrapple;
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (_ropes != null)
             {
